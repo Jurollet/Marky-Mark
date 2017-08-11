@@ -10,7 +10,9 @@ import UIKit
 
 open class MarkdownToViewConverterConfiguration: MarkDownConverterConfiguration<UIView> {
 
-    public override init(elementComposer: ElementComposer<UIView>, styling : Styling) {
+    public init(elementComposer: ElementComposer<UIView>,
+                styling : Styling,
+                listener: MarkdownListener?) {
 
         super.init(elementComposer: elementComposer, styling : styling)
 
@@ -24,10 +26,14 @@ open class MarkdownToViewConverterConfiguration: MarkDownConverterConfiguration<
         addLayoutBlockBuilder(CodeViewLayoutBlockBuilder(converter:converter))
         addLayoutBlockBuilder(QuoteBlockLayoutBuilder(converter:converter))
         addLayoutBlockBuilder(HorizontalLineLayoutBlockBuilder())
-        addLayoutBlockBuilder(ImageViewLayoutBlockBuilder())
+        addLayoutBlockBuilder(ImageViewLayoutBlockBuilder(markdownListener: listener))
     }
 
     public convenience init(styling : Styling){
-        self.init(elementComposer: ViewAppenderComposer(), styling : styling)
+        self.init(elementComposer: ViewAppenderComposer(), styling : styling, listener: nil)
+    }
+
+    public convenience init(styling: Styling, listener: MarkdownListener?) {
+        self.init(elementComposer: ViewAppenderComposer(), styling: styling, listener: listener)
     }
 }
